@@ -1,8 +1,19 @@
 name: Reusable Workflow
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      artifact_name:
+        description: 'Name of the artifact to download'
+        required: false
+        default: 'dist-files'
+        type: string
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Deploy
-              run: echo "Deploying code..."
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact_name }}
+      - name: Deploy
+        run: echo "Deploying code...Using reusable.yml file"
